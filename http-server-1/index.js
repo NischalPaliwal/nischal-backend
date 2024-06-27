@@ -1,9 +1,11 @@
 const express = require('express');
-const port = 4000;
+const port = 8000;
 const app = express();
 
 app.get('/', function(req, res) {
-res.send('<b><i>Hello Everyone</i></b>');
+res.json({
+   msg: "I am a full-stack developer"
+});
 });
 
 app.listen(port);
