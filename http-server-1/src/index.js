@@ -3,7 +3,11 @@
 // npm install -D nodemon
 const express = require("express");
 const app = express();
-const port = 2007;
+const port = 2005;
+const mockUsers = [{id: 1471, name: "Cap", price: 230},
+    {id: 1472, name: "Shirt", price: 300},
+    {id: 1473, name: "Towel", price: 270}
+];
 
 app.get("/", (request, response) => {
     // response.json({
@@ -19,13 +23,17 @@ app.get("/users", (request, response) => {
     ])
 })
 app.get("/products", (request, response) => {
-    response.send([{id: 1471, name: "Cap", price: 230},
-        {id: 1472, name: "Shirt", price: 300},
-        {id: 1473, name: "Towel", price: 270}
-    ])
+    response.send(mockUsers);
 })
 app.get("/users/:id", (request, response) => {
     console.log(request.params);
+    const parsedId = parseInt(request.params.id);
+    console.log(parsedId);
+    if(isNaN(parsedId)) {
+     return response.status(701).send({
+        msg: "BAD REQUEST. INVALID ID."
+     })
+    }
 })
 })
 
