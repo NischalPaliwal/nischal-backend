@@ -34,6 +34,9 @@ app.get("/users/:id", (request, response) => {
         msg: "BAD REQUEST. INVALID ID."
      })
     }
+    else {
+        return response.send(mockUsers.find((user) => user.id === parsedId))
+    }
 })
 })
 
