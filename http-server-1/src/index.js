@@ -3,7 +3,7 @@
 // npm install -D nodemon
 const express = require("express");
 const app = express();
-const port = 2012;
+const port = 2011;
 const mockUsers = [{id: 1471, name: "Cap", price: 230},
     {id: 1472, name: "Shirt", price: 300},
     {id: 1473, name: "Towel", price: 270}
@@ -33,10 +33,8 @@ app.get("/users/:id", (request, response) => {
      return response.status(701).send({
         msg: "BAD REQUEST. INVALID ID."
      })
-    }
-    else {
-        return response.send(mockUsers.find((user) => user.id === parsedId))
-    }
+    }  
+     return response.send(mockUsers.find((user) => user.id === parsedId))
 })
 })
 
