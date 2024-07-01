@@ -38,6 +38,15 @@ app.get("/users/:id", (request, response) => {
 })
 })
 
+app.get("/api", (request, response) => {
+    console.log(request.query);
+    const {query: { filter, value }} = request;
+    // when filter and value are undefined
+    if (filter && value) return response.send(mockUsers.filter((user) => user[filter].includes(value)));
+    response.send(mockUsers);    // http://127.0.0.1:2011/api?filter=nischal&value=12 => { filter: 'nischal' }  { filter: 'nischal', value: '12' }
+
+})
+
 app.listen(port, () => {
     console.log(`Running on port value ${port}.`);
 })
