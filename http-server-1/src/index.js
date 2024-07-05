@@ -20,13 +20,7 @@ const mockUsers = [{ id: 1, name: "Riya Patel", age: 34 },
 
 app.use(express.json());
 
-app.get("/", (request, response) => {
-    // response.json({
-    //     msg: "Hi there from JavaScript"
-    // })
-    response.status(201).send({
-          msg: "Hi there from JavaScript"
-    })
+
 app.get("/users", (request, response) => {
     response.send([{id: 1, username: "nischal", displayName: "Nischal"},
         {id: 2, username: "jack", displayName: "Jack"},
@@ -36,19 +30,18 @@ app.get("/users", (request, response) => {
 app.get("/products", (request, response) => {
     response.send(mockUsers);
 })
-app.get("/users/:id", (request, response) => {
+app.get("/api/users/:id", (request, response) => {
     console.log(request.params);
     const parsedId = parseInt(request.params.id);
     console.log(parsedId);
-    if(isNaN(parsedId)) {
-     return response.status(701).send({
-        msg: "BAD REQUEST. INVALID ID."
-     });
+    if (isNaN(parsedId)) {
+        return response.status(400).send({
+            msg: "BAD REQUEST. INVALID ID."
+        });
     }  
     const findUser = mockUsers.find((user) => user.id === parsedId);
     if (!findUser) return response.sendStatus(404);
     return response.send(findUser);
-})
 })
 
 app.get("/api/users", (request, response) => {
@@ -70,13 +63,15 @@ app.post("/api/users", (request, response) => {
 app.put("/api/users/:id", (request, response) => {
     const { 
     body, 
-    params:{ id } } = request;
-
+    params: { id }, } = request;
     const parsedId = parseInt(id);
     if (isNaN(parsedId)) return response.sendStatus(400);
-    
+    const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
+    if (findUserIndex === -1) return response.sendStatus(404);
+    mockUsers[findUserIndex] = { id: parsedId, ...body };
+    return response.sendStatus(200);
 });
 
 app.listen(port, () => {
     console.log(`Running on port value ${port}.`);
-})
+});
