@@ -67,6 +67,16 @@ app.post("/api/users", (request, response) => {
     return response.status(201).send(newUser);
 });
 
+app.put("/api/users/:id", (request, response) => {
+    const { 
+    body, 
+    params:{ id } } = request;
+
+    const parsedId = parseInt(id);
+    if (isNaN(parsedId)) return response.sendStatus(400);
+    
+});
+
 app.listen(port, () => {
     console.log(`Running on port value ${port}.`);
 })
