@@ -2,6 +2,7 @@
 // npm install express
 // npm install -D nodemon
 const express = require("express");
+import { query } from "express-validator";
 const app = express();
 const port = 2011;
 const mockUsers = [{ id: 1, name: "Riya Patel", age: 34 },
