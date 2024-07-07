@@ -18,6 +18,13 @@ const mockUsers = [{ id: 1, name: "Riya Patel", age: 34 },
     { id: 12, name: "Mohan Gupta", age: 44 }
 ];
 
+const loggingMiddleware = (request, response, next) => {
+    console.log(`${request.method} - ${request.url}`);
+    next();
+};
+
+app.use(loggingMiddleware);
+
 app.use(express.json());
 
 
