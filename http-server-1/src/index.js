@@ -2,7 +2,7 @@
 // npm install express
 // npm install -D nodemon
 const express = require("express");
-import { query } from "express-validator";
+const { query, validationResult, body } = require("express-validator");
 const app = express();
 const port = 2011;
 const mockUsers = [{ id: 1, name: "Riya Patel", age: 34 },
@@ -52,7 +52,9 @@ app.get("/api/users/:id", (request, response) => {
     return response.send(findUser);
 })
 
-app.get("/api/users", query("filter").isString().notEmpty(), (request, response) => {
+app.get("/api/users", query("filter").isString().notEmpty().withMessage("Must not be empty").isLength({min: 2, max: 8}).withMessage("Must be 2-8 characters"), (request, response) => {
+    const result = validationResult(request);
+    console.log(result);
     console.log(request.query);
     const {query: { filter, value }} = request;
     // when filter and value are undefined
@@ -60,7 +62,9 @@ app.get("/api/users", query("filter").isString().notEmpty(), (request, response)
     response.send(mockUsers);    // http://127.0.0.1:2011/api?filter=nischal&value=12 => { filter: 'nischal' }  { filter: 'nischal', value: '12' }
 });
 
-app.post("/api/users", (request, response) => {
+app.post("/api/users", body("name").notEmpty().withMessage("name cannot be empty").isLength({min: 2, max: 8}).withMessage("name must include 2-8 characters").isString().withMessage("name must be a string!"), (request, response) => {
+    const result = validationResult(request);
+    console.log(result);
     console.log(request.body);
     const { body } = request;
     const newUser = { id: mockUsers[mockUsers.length - 1].id + 1, ...body };
