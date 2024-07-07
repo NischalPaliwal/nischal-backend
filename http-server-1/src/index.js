@@ -52,7 +52,7 @@ app.get("/api/users/:id", (request, response) => {
     return response.send(findUser);
 })
 
-app.get("/api/users", (request, response) => {
+app.get("/api/users", query("filter").isString().notEmpty(), (request, response) => {
     console.log(request.query);
     const {query: { filter, value }} = request;
     // when filter and value are undefined
