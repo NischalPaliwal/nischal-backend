@@ -1,11 +1,11 @@
 // npm init -y
 // npm install express
 // npm install -D nodemon
-const express = require("express");
-const { query, validationResult, body, checkSchema } = require("express-validator");
-const { createUserValidationSchema } = require('./utils/validationSchemas.js');
-const { mockUsers } = require('./utils/constants.js');
-const usersRouter = require('./users/users.js');
+import express from "express";
+import { query, validationResult, body, checkSchema } from "express-validator";
+import { createUserValidationSchema } from './utils/validationSchemas.mjs';
+import { mockUsers } from './utils/constants.mjs';
+import usersRouter from './users/users.mjs';
 const app = express();
 const port = 2011;
 

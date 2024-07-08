@@ -1,11 +1,11 @@
 {
   "name": "http-server-1",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon /workspaces/nischal-backend/http-server-1/src/index.js",
-    "start": "node /workspaces/nischal-backend/http-server-1/src/index.js"
+    "start:dev": "nodemon /workspaces/nischal-backend/http-server-1/src/index.mjs",
+    "start": "node /workspaces/nischal-backend/http-server-1/src/index.mjs"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
-  }
+  },
+  "type": "module"
 }

@@ -1,4 +1,4 @@
-const Router = require("express");
+import Router from "express";
 const router = Router();
 
 router.get("/users", (request, response) => {
