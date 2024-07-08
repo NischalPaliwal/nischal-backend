@@ -2,6 +2,7 @@
 // npm install express
 // npm install -D nodemon
 import express from "express";
+import cookieParser from "cookie-parser";
 import { query, validationResult, body, checkSchema } from "express-validator";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
 import { mockUsers } from './utils/constants.mjs';
@@ -15,6 +16,8 @@ const loggingMiddleware = (request, response, next) => {
 };
 
 app.use(loggingMiddleware);
+
+app.use(cookieParser());
 
 app.use(express.json());
 
@@ -90,6 +93,11 @@ app.delete("/api/users/:id", (request, response) => {
     if(findUserIndex === -1) return response.sendStatus(404);
     mockUsers.splice(findUserIndex, 1);
     return response.sendStatus(200);
+});
+
+app.get("/", (request, response) => {
+    response.cookie("hello", "world", { maxAge: 60000 });
+    response.status(201).send({ msg: "Hello" });
 });
 
 app.listen(port, () => {
