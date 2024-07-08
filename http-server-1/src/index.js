@@ -2,7 +2,9 @@
 // npm install express
 // npm install -D nodemon
 const express = require("express");
-const { query, validationResult, body } = require("express-validator");
+const { query, validationResult, body, checkSchema } = require("express-validator");
+const { createUserValidationSchema } = require('./utils/validationSchemas.js')
+
 const app = express();
 const port = 2011;
 const mockUsers = [{ id: 1, name: "Riya Patel", age: 34 },
@@ -62,7 +64,7 @@ app.get("/api/users", query("filter").isString().notEmpty().withMessage("Must no
     response.send(mockUsers);    // http://127.0.0.1:2011/api?filter=nischal&value=12 => { filter: 'nischal' }  { filter: 'nischal', value: '12' }
 });
 
-app.post("/api/users", body("name").notEmpty().withMessage("name cannot be empty").isLength({min: 2, max: 8}).withMessage("name must include 2-8 characters").isString().withMessage("name must be a string!"), (request, response) => {
+app.post("/api/users", checkSchema(createUserValidationSchema) , (request, response) => {
     const result = validationResult(request);
     console.log(result);
     console.log(request.body);
