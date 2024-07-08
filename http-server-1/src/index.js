@@ -64,7 +64,7 @@ app.get("/api/users", query("filter").isString().notEmpty().withMessage("Must no
     response.send(mockUsers);    // http://127.0.0.1:2011/api?filter=nischal&value=12 => { filter: 'nischal' }  { filter: 'nischal', value: '12' }
 });
 
-app.post("/api/users", checkSchema(createUserValidationSchema) , (request, response) => {
+app.post("/api/users", checkSchema(createUserValidationSchema), (request, response) => {
     const result = validationResult(request);
     console.log(result);
     console.log(request.body);
