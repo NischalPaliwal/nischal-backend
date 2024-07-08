@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import { query, validationResult, body, checkSchema } from "express-validator";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
 import { mockUsers } from './utils/constants.mjs';
-import usersRouter from './users/users.mjs';
+import usersRouter from './routes/users.mjs';
 const app = express();
 const port = 2011;
 
