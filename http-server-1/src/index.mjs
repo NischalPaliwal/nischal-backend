@@ -1,6 +1,7 @@
 // npm init -y
 // npm install express
 // npm install -D nodemon
+// cookie-parser => npm i cookie-parser
 import express from "express";
 import cookieParser from "cookie-parser";
 import { query, validationResult, body, checkSchema } from "express-validator";

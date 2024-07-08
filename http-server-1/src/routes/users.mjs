@@ -1,8 +1,6 @@
 import { Router } from "express";
 const router = Router();
 
-// cookie-parser => npm i cookie-parser
-
 router.get("/users", (request, response) => {
     console.log(request.headers.cookie);
     console.log(request.cookies);
