@@ -69,7 +69,7 @@ app.put("/api/users/:id", (request, response) => {
     return response.sendStatus(200);
 });
 
-app.patch("api/users/:id", (request, response) => {
+app.patch("/api/users/:id", (request, response) => {
  const {
    body,
    params: { id },
