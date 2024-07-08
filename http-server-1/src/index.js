@@ -3,23 +3,11 @@
 // npm install -D nodemon
 const express = require("express");
 const { query, validationResult, body, checkSchema } = require("express-validator");
-const { createUserValidationSchema } = require('./utils/validationSchemas.js')
-
+const { createUserValidationSchema } = require('./utils/validationSchemas.js');
+const { mockUsers } = require('./utils/constants.js');
+const usersRouter = require('./users/users.js');
 const app = express();
 const port = 2011;
-const mockUsers = [{ id: 1, name: "Riya Patel", age: 34 },
-    { id: 2, name: "Rahul Kumar", age: 54 },
-    { id: 3, name: "Nikita Sharma", age: 35 },
-    { id: 4, name: "Arjun Das", age: 23 },
-    { id: 5, name: "Priya Joshi", age: 12 },
-    { id: 6, name: "Sagar Mehta", age: 45 },
-    { id: 7, name: "Anjali Kapoor", age: 29 },
-    { id: 8, name: "Vikram Trivedi", age: 38 },
-    { id: 9, name: "Pooja Pandey", age: 24 },
-    { id: 10, name: "Dev Singh", age: 26 },
-    { id: 11, name: "Sonia Rao", age: 36 },
-    { id: 12, name: "Mohan Gupta", age: 44 }
-];
 
 const loggingMiddleware = (request, response, next) => {
     console.log(`${request.method} - ${request.url}`);
@@ -30,13 +18,8 @@ app.use(loggingMiddleware);
 
 app.use(express.json());
 
+app.use(usersRouter);
 
-app.get("/users", (request, response) => {
-    response.send([{id: 1, username: "nischal", displayName: "Nischal"},
-        {id: 2, username: "jack", displayName: "Jack"},
-        {id: 3, username: "shane", displayName: "Shane"}
-    ])
-})
 app.get("/products", (request, response) => {
     response.send(mockUsers);
 })
