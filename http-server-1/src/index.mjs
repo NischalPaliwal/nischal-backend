@@ -2,11 +2,13 @@
 // npm install express
 // npm install -D nodemon
 // cookie-parser => npm i cookie-parser
+// npm i session
 import express from "express";
 import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
 // and making them available on the req.cookies object.
 import { query, validationResult, body, checkSchema } from "express-validator";
+import session from "express-session";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
 import { mockUsers } from './utils/constants.mjs';
 import usersRouter from './routes/users.mjs';
