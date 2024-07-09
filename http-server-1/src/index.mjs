@@ -18,7 +18,7 @@ const loggingMiddleware = (request, response, next) => {
 
 app.use(loggingMiddleware);
 
-app.use(cookieParser());
+app.use(cookieParser("helloworld"));  // secret
 
 app.use(express.json());
 
@@ -97,7 +97,7 @@ app.delete("/api/users/:id", (request, response) => {
 });
 
 app.get("/", (request, response) => {
-    response.cookie("hello", "world", { maxAge: 60000 });
+    response.cookie("hello", "world", { maxAge: 60000, signed: true });
     response.status(201).send({ msg: "Hello" });
 });
 
