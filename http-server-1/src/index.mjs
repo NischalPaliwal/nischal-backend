@@ -113,6 +113,7 @@ app.delete("/api/users/:id", (request, response) => {
 app.get("/", (request, response) => {
     console.log(request.session);
     console.log(request.sessionID);
+    request.session.visited = true;  // modifying session object
     response.cookie("hello", "world", { maxAge: 60000, signed: true });
     response.status(201).send({ msg: "Hello" });
 });
