@@ -56,6 +56,8 @@ app.get("/api/users/:id", (request, response) => {
 })
 
 app.get("/api/users", query("filter").isString().notEmpty().withMessage("Must not be empty").isLength({min: 2, max: 8}).withMessage("Must be 2-8 characters"), (request, response) => {
+    console.log(request.session);
+    console.log(request.sessionID);
     const result = validationResult(request);
     console.log(result);
     console.log(request.query);
@@ -116,6 +118,14 @@ app.get("/", (request, response) => {
     request.session.visited = true;  // modifying session object
     response.cookie("hello", "world", { maxAge: 60000, signed: true });
     response.status(201).send({ msg: "Hello" });
+});
+
+app.post("/api/auth", (request, response) => {
+    const { body: { name, age } } = request;
+    const findUser = mockUsers.find((user) => user.name === name);
+    if (!findUser || findUser.age !== age) return response.status(401).send({ msg: "BAD CREDENTIALS" });
+    request.session.user = findUser;    // stores user information in the session
+    return response.status(200).send(findUser);
 });
 
 app.listen(port, () => {
