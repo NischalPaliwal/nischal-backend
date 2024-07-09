@@ -2,7 +2,7 @@
 // npm install express
 // npm install -D nodemon
 // cookie-parser => npm i cookie-parser
-// npm i session
+// npm i express-session
 import express from "express";
 import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
@@ -23,6 +23,16 @@ const loggingMiddleware = (request, response, next) => {
 app.use(loggingMiddleware);
 
 app.use(cookieParser("helloworld"));  // secret
+
+app.use(
+    session({
+        secret: "nischal the developer",
+        saveUninitialized: false,
+        resave: false,
+        cookie: {
+            maxAge: 60000 * 2,
+        }
+    }));
 
 app.use(express.json());
 
@@ -101,6 +111,8 @@ app.delete("/api/users/:id", (request, response) => {
 });
 
 app.get("/", (request, response) => {
+    console.log(request.session);
+    console.log(request.sessionID);
     response.cookie("hello", "world", { maxAge: 60000, signed: true });
     response.status(201).send({ msg: "Hello" });
 });
