@@ -3,7 +3,7 @@
 // npm install -D nodemon
 // cookie-parser => npm i cookie-parser
 // npm i express-session
-import express from "express";
+import express, { response } from "express";
 import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
 // and making them available on the req.cookies object.
@@ -30,7 +30,7 @@ app.use(
         saveUninitialized: false,
         resave: false,
         cookie: {
-            maxAge: 60000 * 2,
+            maxAge: 60000 * 2 * 5,
         }
     }));
 
@@ -120,12 +120,32 @@ app.get("/", (request, response) => {
     response.status(201).send({ msg: "Hello" });
 });
 
-app.post("/api/auth", (request, response) => {
+app.post("/api/auth", (request, response) => {       // POST request is used to send the user's credentials (name and age) to the server for verification.
     const { body: { name, age } } = request;
     const findUser = mockUsers.find((user) => user.name === name);
     if (!findUser || findUser.age !== age) return response.status(401).send({ msg: "BAD CREDENTIALS" });
     request.session.user = findUser;    // stores user information in the session
     return response.status(200).send(findUser);
+});
+
+app.get("/api/auth/status", (request, response) => {
+    return request.session.user ? response.status(200).send(request.session.user) : response.status(401).send("NOT AUTHENTICATED");
+});
+
+app.post("/api/cart", (request, response) => {
+    if(!request.session.user) return response.sendStatus(401);
+    const { body: item } = request;
+    const { cart } = request.session;
+    if(cart) {
+        cart.push(item);
+    }
+    else { request.session.cart = [item]; }
+    return response.status(201).send(item);
+});
+
+app.get("/api/cart", (request, response) => {
+    if(!request.session.user) return response.sendStatus(401);
+    return response.send(request.session.cart);
 });
 
 app.listen(port, () => {
