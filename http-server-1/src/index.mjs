@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
 // and making them available on the req.cookies object.
 import { query, validationResult, body, checkSchema } from "express-validator";
+import passport from "passport";
 import session from "express-session";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
 import { mockUsers } from './utils/constants.mjs';
