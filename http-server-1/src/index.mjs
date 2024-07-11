@@ -4,12 +4,12 @@
 // cookie-parser => npm i cookie-parser
 // npm i express-session
 // npm install passport passport-local
-import express, { response } from "express";
+import express from "express";
 import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
 // and making them available on the req.cookies object.
 import { query, validationResult, body, checkSchema } from "express-validator";
-import passport, { initialize } from "passport";
+import passport from "passport";
 import session from "express-session";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
 import "./strategies/local-strategy.mjs";
@@ -27,6 +27,8 @@ app.use(loggingMiddleware);
 
 app.use(cookieParser("helloworld"));  // secret
 
+app.use(express.json());
+
 app.use(
     session({
         secret: "nischal the developer",
@@ -36,8 +38,6 @@ app.use(
             maxAge: 60000 * 2 * 5,
         }
     }));
-
-app.use(express.json());
 
 app.use(passport.initialize());
 
@@ -127,17 +127,17 @@ app.get("/", (request, response) => {
     response.status(201).send({ msg: "Hello" });
 });
 
-app.post("/api/auth", (request, response) => {       // POST request is used to send the user's credentials (name and age) to the server for verification.
-    const { body: { name, age } } = request;
-    const findUser = mockUsers.find((user) => user.name === name);
-    if (!findUser || findUser.age !== age) return response.status(401).send({ msg: "BAD CREDENTIALS" });
-    request.session.user = findUser;    // stores user information in the session
-    return response.status(200).send(findUser);
-});
+// app.post("/api/auth", (request, response) => {       // POST request is used to send the user's credentials (name and age) to the server for verification.
+//      const { body: { name, age } } = request;
+//      const findUser = mockUsers.find((user) => user.name === name);
+//      if (!findUser || findUser.age !== age) return response.status(401).send({ msg: "BAD CREDENTIALS" });
+//      request.session.user = findUser;    // stores user information in the session
+//      return response.status(200).send(findUser);
+//  });
 
-app.get("/api/auth/status", (request, response) => {
-    return request.session.user ? response.status(200).send(request.session.user) : response.status(401).send("NOT AUTHENTICATED");
-});
+// app.get("/api/auth/status", (request, response) => {
+//     return request.session.user ? response.status(200).send(request.session.user) : response.status(401).send("NOT AUTHENTICATED");
+//  });
 
 app.post("/api/cart", (request, response) => {
     if(!request.session.user) return response.sendStatus(401);
@@ -159,12 +159,19 @@ app.post("/api/auth", passport.authenticate("local") , (request, response) => {
     return response.sendStatus(200);
 });
 
-app.get("/api/auth/status", (request, response) => {
+app.get("/api/auth/status", passport.authenticate("local") , (request, response) => {
     console.log(`Inside /api/auth/status endpoint`);
     console.log(request.user);
     console.log(request.session);
     return request.user ? response.send(request.user) : response.sendStatus(401);
 });
+
+app.post("/api/auth/logout", (request, response) => {
+    request.logout((err) => {
+     if (err) return response.sendStatus(400);
+     return response.sendStatus(200);
+    });
+  });
 
 app.listen(port, () => {
     console.log(`Running on port value ${port}.`);

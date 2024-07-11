@@ -21,7 +21,7 @@ passport.deserializeUser((id, done) => {
 });
 
 export default passport.use(
-    new Strategy((name, password, done) => {
+    new Strategy({ usernameField: "name", passwordField: "password" }, (name, password, done) => {
     console.log(`Username: ${name}`);
     console.log(`Password: ${password}`);
         try {
