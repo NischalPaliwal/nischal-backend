@@ -3,14 +3,16 @@
 // npm install -D nodemon
 // cookie-parser => npm i cookie-parser
 // npm i express-session
+// npm install passport passport-local
 import express, { response } from "express";
 import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
 // and making them available on the req.cookies object.
 import { query, validationResult, body, checkSchema } from "express-validator";
-import passport from "passport";
+import passport, { initialize } from "passport";
 import session from "express-session";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
+import "./strategies/local-strategy.mjs";
 import { mockUsers } from './utils/constants.mjs';
 import usersRouter from './routes/users.mjs';
 const app = express();
@@ -36,6 +38,10 @@ app.use(
     }));
 
 app.use(express.json());
+
+app.use(passport.initialize());
+
+app.use(passport.session());
 
 app.use(usersRouter);
 
@@ -147,6 +153,17 @@ app.post("/api/cart", (request, response) => {
 app.get("/api/cart", (request, response) => {
     if(!request.session.user) return response.sendStatus(401);
     return response.send(request.session.cart);
+});
+
+app.post("/api/auth", passport.authenticate("local") , (request, response) => {
+    return response.sendStatus(200);
+});
+
+app.get("/api/auth/status", (request, response) => {
+    console.log(`Inside /api/auth/status endpoint`);
+    console.log(request.user);
+    console.log(request.session);
+    return request.user ? response.send(request.user) : response.sendStatus(401);
 });
 
 app.listen(port, () => {

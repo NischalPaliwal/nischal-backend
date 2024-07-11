@@ -1,5 +1,4 @@
-import { signedCookies } from "cookie-parser";
-import { Router } from "express";
+import Router from "express";
 const router = Router();
 
 router.get("/users", (request, response) => {
