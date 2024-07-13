@@ -18,7 +18,7 @@ import { mockUsers } from './utils/constants.mjs';
 import mongoose from "mongoose";
 import usersRouter from './routes/users.mjs';
 const app = express();
-const port = 2011;
+const port = process.env.PORT || 2011;
 
 mongoose.connect('mongodb://127.0.0.1:27017/mydatabase')
 .then(() => console.log('Connected to MongoDB'))
