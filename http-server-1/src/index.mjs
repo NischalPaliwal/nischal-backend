@@ -15,6 +15,7 @@ import session from "express-session";
 import { createUserValidationSchema } from './utils/validationSchemas.mjs';
 import "./strategies/local-strategy.mjs";
 import { mockUsers } from './utils/constants.mjs';
+import mongoose from "mongoose";
 import usersRouter from './routes/users.mjs';
 const app = express();
 const port = 2011;
