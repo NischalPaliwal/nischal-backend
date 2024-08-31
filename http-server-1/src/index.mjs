@@ -5,6 +5,7 @@
 // npm i express-session
 // npm install passport passport-local
 // npm i mongoose
+// npm i bcrypt "for hashing passwords"
 import express from "express";
 import cookieParser from "cookie-parser";
 // In Express.js, the cookie-parser middleware is responsible for parsing cookies sent in the request headers
